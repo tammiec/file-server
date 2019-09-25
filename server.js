@@ -16,26 +16,45 @@ let fs = require(`fs`);
 
 
 net.createServer(function(socket) {
-  socket.write('Hello client!\n');
+  socket.write('Hello client! Please enter a file you would like to retrieve: \n>');
   let fileName;
   // });
 
   socket.on('data', (data) => {
     fileName = String(data).trim();
-    if (!fileName.includes(".txt")) {
-      fileName += ".txt"
-    }
+    // if (!fileName.includes(".txt")) {
+    //   fileName += ".txt"
+    // }
     console.log(`Looking for file ${fileName}`);
 
     //Find the file within the /data-files subdirectory
 
     const findFile = function(file, callback) {
-      fs.readFile(`./data-files/${file}`, 'utf8', (error, data) => {
+      let fileType = file.split('.')[1];
+      let enc;
+      switch (fileType) {
+
+        case 'pdf':
+          enc = "ascii";
+          break;
+        case 'jpg':
+          enc = "base64";
+          break;
+        default:
+          enc = "utf8";
+          break;
+      }
+
+      console.log(`Filetype is ${fileType}, encoding it with ${enc}`);
+
+
+      fs.readFile(`./data-files/${file}`, enc, (error, data) => {
         if (!error) {
           callback(data);
         } else {
           console.log("The file does not exist!");
-          callback(undefined);
+
+          callback("The file does not exist, please try again.\n");
         }
 
       });
@@ -43,7 +62,7 @@ net.createServer(function(socket) {
     }
 
     findFile(fileName, (data) => {
-      socket.write(data);
+      socket.write(data + "\n Would you like another file? If so enter it, otherwise press ctrl+c to exit: \n>");
     });
 
 
