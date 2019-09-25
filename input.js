@@ -1,8 +1,10 @@
 let connection;
-const connect = require('./client');
+//onst { connect } = require('./client');
 
-const setupInput = function() {
-  connection = connect();
+const setupInput = function(conn) {
+  //console.log(connect);
+  //let conn = connect();
+  connection = conn;
 
   const stdin = process.stdin;
   stdin.setRawMode(true);
@@ -13,9 +15,11 @@ const setupInput = function() {
 };
 
 const handleUserInput = function(input) {
-  input.on('data', data => {
-    connection.write(data);
-  })
+  /* input.on('data', data => {
+     connection.write(data);
+   });*/
+
+  connection.write(input);
 
   // if (input === constants.MOVE_UP_KEY) {
   //   connection.write("Move: up");
@@ -36,6 +40,9 @@ const handleUserInput = function(input) {
   // };
 };
 
+// setupInput();
+
 module.exports = {
   setupInput
 };
+
