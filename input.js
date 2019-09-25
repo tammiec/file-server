@@ -4,7 +4,8 @@ let connection;
 const setupInput = function(conn) {
   //console.log(connect);
   //let conn = connect();
-  connection = conn;
+  connection = conn();
+  console.log(connection);
 
   const stdin = process.stdin;
   stdin.setRawMode(true);
@@ -18,9 +19,11 @@ const handleUserInput = function(input) {
   /* input.on('data', data => {
      connection.write(data);
    });*/
+  if (input === "a") {
+    connection.write(input);
+  }
 
-  connection.write(input);
-
+  console.log("here");
   // if (input === constants.MOVE_UP_KEY) {
   //   connection.write("Move: up");
   // };
