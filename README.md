@@ -4,15 +4,19 @@ This code is used for learning purposes. The objective is to create an interface
 
 ## how to use
 
+To start the server use server.js. Any files you would like to share can be saved in a /data-files folder.
+
+The client can run client.js which will prompt for file names to be sent. For PDFs the server will send the file encoded in ascii format, for .jpgs it will be encoded in base64, all other file formats will be encoded in utf8.
+
 This code uses netcat for the client input and deals with commands using the server.js file. 
 
 ## old versions
 
 client-old.js and input-old.js are previous workings of this code using a different approach. They are no longer in use for the final product.
 
-## bugs to work on
+## possible features
+- A feature where the output of the stream is written to the client's file system 
 
-file-server only works for text files at the moment, working on a more elaborate solution that works for different file types (ie. PDF, images, etc.).
 
 ## collaborators
 [@tammiec](https://github.com/tammiec)
