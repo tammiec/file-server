@@ -6,9 +6,8 @@ This code is used for learning purposes. The objective is to create an interface
 
 To start the server use server.js. Any files you would like to share can be saved in a /data-files folder.
 
-The client can run client.js which will prompt for file names to be sent. For PDFs the server will send the file encoded in ascii format, for .jpgs it will be encoded in base64, all other file formats will be encoded in utf8.
 
-This code uses netcat for the client input and deals with commands using the server.js file. 
+This code uses netcat for the client input and deals with commands using the server.js file. For PDFs the server will send the file encoded in ascii format, for .jpgs it will be encoded in base64, all other file formats will be encoded in utf8.
 
 ## old versions
 
