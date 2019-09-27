@@ -1,26 +1,49 @@
-var net = require('net');
-let readline = require(`readline`);
+const net = require('net');
+const readline = require(`readline`);
+const fs = require('fs');
+
+let flag = false;
 
 const connect = function() {
   const conn = net.createConnection(
     {
-      host: 'localhost', // change to IP address if connecting to another computer
+      host: '172.46.3.232', // change to IP address if connecting to another computer
       port: 3000
     });
 
-  conn.setEncoding('utf8'); // interpret data as text
+  
+  // conn.setEncoding('utf8'); // interpret data as text
+  // conn.setEncoding('ascii'); // interpret data as text
+  conn.setEncoding('base64'); // interpret data as text
 
   conn.on('connect', () => {
-    conn.write('Hello from client!');
+    // conn.write('Hello from client!');
+    // console.log("enter file name:\n");
     // conn.setEncoding('utf8');
   });
 
   conn.on('data', (data) => {
-    console.log('Server says: ', data);
-  }); //receives data from server?
+
+
+    fs.writeFile('./received.jpg', data,(err) => {
+      if (err) {
+        // Handle error
+        console.log("Failed to write to file. File path invalid");
+        return;
+      }
+    });
+    // if (flag) {
+    //   flag = false;
+    // } else {
+    //   console.log('Server says: ', data);
+    // }
+    // if (data === "data incoming") {
+    //   flag = true;
+    // }
+  });
 
   return conn;
-}
+};
 
 
 const setupInput = function(conn) {
@@ -35,7 +58,7 @@ const setupInput = function(conn) {
 
 
   // return stdin;
-}
+};
 
 setupInput(connect()); //Needs return value of connect
 
