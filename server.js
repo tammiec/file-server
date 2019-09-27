@@ -11,8 +11,8 @@
 // server.listen(3000, () => {
 //   console.log('Server listening on port 3000!');
 
-var net = require('net');
-let fs = require(`fs`);
+const net = require('net');
+const fs = require(`fs`);
 
 
 net.createServer(function(socket) {
@@ -35,16 +35,15 @@ net.createServer(function(socket) {
       let fileType = file.split('.')[1];
       let enc;
       switch (fileType) {
-
-        case 'pdf':
-          enc = "ascii";
-          break;
-        case 'jpg':
-          enc = "base64";
-          break;
-        default:
-          enc = "utf8";
-          break;
+      case 'pdf':
+        enc = "ascii";
+        break;
+      case 'jpg':
+        enc = "base64";
+        break;
+      default:
+        enc = "utf8";
+        break;
       }
 
       console.log(`Filetype is ${fileType}, encoding it with ${enc}`);
@@ -60,7 +59,7 @@ net.createServer(function(socket) {
 
       });
       //Send it back
-    }
+    };
 
     findFile(fileName, (data) => {
 
