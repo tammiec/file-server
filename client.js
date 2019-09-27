@@ -7,14 +7,14 @@ let flag = false;
 const connect = function() {
   const conn = net.createConnection(
     {
-      host: '172.46.3.232', // change to IP address if connecting to another computer
+      host: 'localhost', //'172.46.3.232', // change to IP address if connecting to another computer
       port: 3000
     });
 
   
-  // conn.setEncoding('utf8'); // interpret data as text
+  conn.setEncoding('utf8'); // interpret data as text
   // conn.setEncoding('ascii'); // interpret data as text
-  conn.setEncoding('base64'); // interpret data as text
+  // conn.setEncoding('base64'); // interpret data as text
 
   conn.on('connect', () => {
     // conn.write('Hello from client!');
@@ -25,7 +25,7 @@ const connect = function() {
   conn.on('data', (data) => {
 
 
-    fs.writeFile('./received.jpg', data,(err) => {
+    fs.writeFile('./received.txt', data,'base64', (err) => {
       if (err) {
         // Handle error
         console.log("Failed to write to file. File path invalid");
