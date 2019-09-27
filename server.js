@@ -16,12 +16,14 @@ let fs = require(`fs`);
 
 
 net.createServer(function(socket) {
+  //let flag = false;
   socket.write('Hello client! Please enter a file you would like to retrieve: \n>');
   let fileName;
   // });
 
   socket.on('data', (data) => {
     fileName = String(data).trim();
+
     // if (!fileName.includes(".txt")) {
     //   fileName += ".txt"
     // }
@@ -53,7 +55,6 @@ net.createServer(function(socket) {
           callback(data);
         } else {
           console.log("The file does not exist!");
-
           callback("The file does not exist, please try again.\n");
         }
 
@@ -62,7 +63,11 @@ net.createServer(function(socket) {
     }
 
     findFile(fileName, (data) => {
-      socket.write(data + "\n Would you like another file? If so enter it, otherwise press ctrl+c to exit: \n>");
+
+      //socket.write("data incoming");
+      //socket.fush
+      socket.write(data);
+      // socket.write("\n Would you like another file? If so enter it, otherwise press ctrl+c to exit: \n>");
     });
 
 
