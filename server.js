@@ -1,77 +1,44 @@
-// const net = require('net');
-
-// const server = net.createServer();
-
-// server.on('connection', (client) => {
-//   console.log('New client connected!');
-//   client.write('What file would you like?');
-//   client.setEncoding('utf8'); // interpret data as text
-// });
-
-// server.listen(3000, () => {
-//   console.log('Server listening on port 3000!');
-
 const net = require('net');
 const fs = require(`fs`);
 
 
 net.createServer(function(socket) {
-  //let flag = false;
-  socket.write('Hello client! Please enter a file you would like to retrieve: \n>');
   let fileName;
-  // });
 
   socket.on('data', (data) => {
     fileName = String(data).trim();
 
-    // if (!fileName.includes(".txt")) {
-    //   fileName += ".txt"
-    // }
-    console.log(`Looking for file ${fileName}`);
-
-    //Find the file within the /data-files subdirectory
-
     const findFile = function(file, callback) {
-      let fileType = file.split('.')[1];
-      let enc;
-      switch (fileType) {
-      case 'pdf':
-        enc = "ascii";
-        break;
-      case 'jpg':
-        enc = "base64";
-        break;
-      default:
-        enc = "utf8";
-        break;
-      }
+      console.log(`User has requested ${file}. sending now...`);
 
-      console.log(`Filetype is ${fileType}, encoding it with ${enc}`);
-
-
-      fs.readFile(`./data-files/${file}`, enc, (error, data) => {
+      //Reads file with a specific encoding
+      fs.readFile(`./data-files/${file}`, (error, data) => {
         if (!error) {
-          callback(data);
+          console.log(`File has been sent successfully!`);
+          callback(error, data);
         } else {
-          console.log("The file does not exist!");
-          callback("The file does not exist, please try again.\n");
+          console.log("The file did not exist!");
+          callback(error, "The file does not exist, please try again.\n");
         }
 
       });
-      //Send it back
     };
 
-    findFile(fileName, (data) => {
-
-      //socket.write("data incoming");
-      //socket.fush
-      socket.write(data);
-      // socket.write("\n Would you like another file? If so enter it, otherwise press ctrl+c to exit: \n>");
+    findFile(fileName, (error, data) => {
+      if (error) {
+        socket.write(data);
+      } else {
+        //We need to append some text at the beginning and at the end of the buffer to show that it is a file that should be saved. The client side code will be looking for this signature
+        //This is analagous to how HTTP works, each request made will specify the filetypes expected, the server will send a response header that will indicate the type of information and size of information that will be received. This is essentially how a protocol works
+        // We can define our own protocols. Some common models are to include some "Start" bits, a "payload length" bit, a checksum, and then a payload.
+        let bs = Buffer.concat([Buffer.from("X200X"), data, Buffer.from("X400X")]);
+        socket.write(bs);
+      }
     });
 
 
 
   });
 
-}).listen(3000);
+}).listen(8080);
 
